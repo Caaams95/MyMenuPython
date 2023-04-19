@@ -12,9 +12,6 @@ def spam():
     global label_repeats
     global bouton_launch
 
-    # Cacher les widgets de random s'ils sont visibles
-    if random_widgets:
-        hide_random_widgets()
     # Afficher l'Entry pour le message
     label_message = tk.Label(fenetre, text="Entrez le message à spammer : ")
     label_message.pack(side=tk.TOP)
