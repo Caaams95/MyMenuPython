@@ -12,6 +12,9 @@ def spam():
     global label_repeats
     global bouton_launch
 
+    # Cacher les widgets de random s'ils sont visibles
+    if random_widgets:
+        hide_random_widgets()
     # Afficher l'Entry pour le message
     label_message = tk.Label(fenetre, text="Entrez le message à spammer : ")
     label_message.pack(side=tk.TOP)
@@ -47,14 +50,37 @@ def launch_spam():
 
 
 def rand():
-    time.sleep(1)
-    text=('Cams', 'Fnny')
-    lastWindow()
-    for i in range (10):
-        a = random.choice(text)
-        pg.write("Coucou " + a)
-        pg.press('enter')
+    global entry_message
+    global label_message
+    global bouton_launch
 
+    # Afficher l'Entry pour le message
+    label_message = tk.Label(fenetre, text="Entrez une liste de mots séparés par des espaces : ")
+    label_message.pack(side=tk.TOP)
+    entry_message = tk.Entry(fenetre)
+    entry_message.pack(side=tk.TOP)
+
+    # Afficher le bouton pour lancer le spam
+    bouton_launch = tk.Button(fenetre, text="Lancer le spam", command=launch_random)
+    bouton_launch.pack(side=tk.TOP)
+
+def launch_random():
+    message = entry_message.get()
+
+    # Fermer les Entries et Labels et lancer le spam
+    entry_message.pack_forget()
+    label_message.pack_forget()
+    bouton_launch.pack_forget()
+
+    if message:
+        text = message.split()
+        lastWindow()
+        for i in range (10):
+            a = random.choice(text)
+            pg.write("Coucou " + a)
+            pg.press('enter')
+    else:
+        tk.messagebox.showwarning("Attention", "Vous n'avez rien entré.")
 
 def lastWindow():
     pg.keyDown('alt')
