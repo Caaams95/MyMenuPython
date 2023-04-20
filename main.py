@@ -6,14 +6,14 @@ from tkinter import simpledialog
 
 def menu():
     # Créer les boutons avec des tailles fixes
-    bouton1 = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1)
-    bouton2 = tk.Button(fenetre, text="Random", command=rand, width=15, height=1)
-    bouton3 = tk.Button(fenetre, text="Exit", command=exit, width=15, height=1)
+    bouton1 = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1, bg="#CCD1D1", )
+    bouton2 = tk.Button(fenetre, text="Random", command=rand, width=15, height=1, bg="#CCD1D1")
+    bouton3 = tk.Button(fenetre, text="Exit", command=exit, width=15, height=1, bg="#E6B0AA")
 
     # Afficher les boutons dans la fenêtre
-    bouton1.pack()
-    bouton2.pack()
-    bouton3.pack()
+    bouton1.pack(pady=1) #pady = espace autour du bouton
+    bouton2.pack(pady=1)
+    bouton3.pack(pady=1)
 
 def remove_all_widgets():
     """Remove all widgets from the main window"""
@@ -131,6 +131,7 @@ def exit():
 fenetre = tk.Tk()
 fenetre.title("SpamMessage")
 fenetre.geometry("300x200")  # Définir la taille de la fenêtre
+
 # fenetre.resizable(False, False)
 
 showMenu()
