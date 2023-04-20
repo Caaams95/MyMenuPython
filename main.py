@@ -4,8 +4,37 @@ import time
 import tkinter as tk
 from tkinter import simpledialog
 
+def menu():
+    # Créer les boutons avec des tailles fixes
+    bouton1 = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1)
+    bouton2 = tk.Button(fenetre, text="Random", command=rand, width=15, height=1)
+    bouton3 = tk.Button(fenetre, text="Exit", command=exit, width=15, height=1)
+
+    # Afficher les boutons dans la fenêtre
+    bouton1.pack()
+    bouton2.pack()
+    bouton3.pack()
+
+def remove_all_widgets():
+    """Remove all widgets from the main window"""
+    for widget in fenetre.winfo_children():
+        widget.destroy()
+
+def showMenu():
+    remove_all_widgets()
+    menu()
+    fenetre.title("SpamMessage")
+
+
+def clearAndReturnButton():
+    remove_all_widgets()
+    bouton_remove = tk.Button(fenetre, text="Retour", command=showMenu)
+    bouton_remove.pack(side=tk.BOTTOM)
 
 def spam():
+    clearAndReturnButton()
+    fenetre.title("SpamMessage - Spam")
+
     global entry_message
     global entry_repeats
     global label_message
@@ -28,25 +57,11 @@ def spam():
     bouton_launch = tk.Button(fenetre, text="Lancer le spam", command=launch_spam)
     bouton_launch.pack(side=tk.TOP)
 
-def launch_spam():
-    # Récupérer les entrées utilisateur
-    message = entry_message.get()
-    num_repeats = int(entry_repeats.get())
-
-    # Fermer les Entries et Labels et lancer le spam
-    entry_message.pack_forget()
-    entry_repeats.pack_forget()
-    label_message.pack_forget()
-    label_repeats.pack_forget()
-    bouton_launch.pack_forget()
-
-    lastWindow()
-    for i in range(num_repeats):
-        pg.write(message)
-        pg.press('enter')
-
 
 def rand():
+    clearAndReturnButton()
+    fenetre.title("SpamMessage - Random")
+
     global entry_message
     global label_message
     global bouton_launch
@@ -60,6 +75,26 @@ def rand():
     # Afficher le bouton pour lancer le spam
     bouton_launch = tk.Button(fenetre, text="Lancer le spam", command=launch_random)
     bouton_launch.pack(side=tk.TOP)
+
+def launch_spam():
+    # Récupérer les entrées utilisateur
+    message = entry_message.get()
+    num_repeats = int(entry_repeats.get())
+
+    # Fermer les Entries et Labels et lancer le spam
+    entry_message.pack_forget()
+    entry_repeats.pack_forget()
+    label_message.pack_forget()
+    label_repeats.pack_forget()
+    bouton_launch.pack_forget()
+
+    # showMenuButton()
+    lastWindow()
+    for i in range(num_repeats):
+        pg.write(message)
+        pg.press('enter')
+
+
 
 def launch_random():
     message = entry_message.get()
@@ -88,21 +123,17 @@ def lastWindow():
 def exit():
     fenetre.destroy()
 
+
+
+# START =========================================
+
 # Créer une fenêtre
 fenetre = tk.Tk()
 fenetre.title("SpamMessage")
 fenetre.geometry("300x200")  # Définir la taille de la fenêtre
 # fenetre.resizable(False, False)
- 
-# Créer les boutons avec des tailles fixes
-bouton1 = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1)
-bouton2 = tk.Button(fenetre, text="random", command=rand, width=15, height=1)
-bouton3 = tk.Button(fenetre, text="exit", command=exit, width=15, height=1)
 
-# Afficher les boutons dans la fenêtre
-bouton1.pack()
-bouton2.pack()
-bouton3.pack()
+showMenu()
 
 # Démarrer la boucle principale de la fenêtre
 fenetre.mainloop()
