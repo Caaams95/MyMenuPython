@@ -1,4 +1,7 @@
+import os
 import random
+import subprocess
+
 import pyautogui as pg
 import time
 import tkinter as tk
@@ -6,14 +9,16 @@ from tkinter import simpledialog
 
 def menu():
     # Créer les boutons avec des tailles fixes
-    bouton1 = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1, bg="#CCD1D1", )
-    bouton2 = tk.Button(fenetre, text="Random", command=rand, width=15, height=1, bg="#CCD1D1")
-    bouton3 = tk.Button(fenetre, text="Exit", command=exit, width=15, height=1, bg="#E6B0AA")
+    spam_bouton = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1, bg="#CCD1D1", )
+    random_bouton = tk.Button(fenetre, text="Random", command=rand, width=15, height=1, bg="#CCD1D1")
+    popup_bouton = tk.Button(fenetre, text="Pop up infinite", command=popup, width=15, height=1, bg="#CCD1D1")
+    exit_bouton = tk.Button(fenetre, text="Exit", command=exit, width=15, height=1, bg="#E6B0AA")
 
     # Afficher les boutons dans la fenêtre
-    bouton1.pack(pady=1) #pady = espace autour du bouton
-    bouton2.pack(pady=1)
-    bouton3.pack(pady=1)
+    spam_bouton.pack(pady=1) #pady = espace autour du bouton
+    random_bouton.pack(pady=1)
+    popup_bouton.pack(pady=1)
+    exit_bouton.pack(pady=1)
 
 def remove_all_widgets():
     """Remove all widgets from the main window"""
@@ -24,7 +29,6 @@ def showMenu():
     remove_all_widgets()
     menu()
     fenetre.title("SpamMessage")
-
 
 def clearAndReturnButton():
     remove_all_widgets()
@@ -75,6 +79,37 @@ def rand():
     # Afficher le bouton pour lancer le spam
     bouton_launch = tk.Button(fenetre, text="Lancer le spam", command=launch_random)
     bouton_launch.pack(side=tk.TOP)
+
+def popup():
+    global entry_message
+    global label_message
+    global bouton_launch
+
+    clearAndReturnButton()
+    fenetre.title("SpamMessage - Popup")
+
+    # Afficher l'Entry pour le message
+    label_message = tk.Label(fenetre, text="Entrez le message à spammer : ")
+    label_message.pack(side=tk.TOP)
+    entry_message = tk.Entry(fenetre)
+    entry_message.pack(side=tk.TOP)
+
+    # Afficher le bouton pour lancer le spam
+    bouton_launch = tk.Button(fenetre, text="Lancer la popup", command=launch_popup)
+    bouton_launch.pack(side=tk.TOP)
+
+
+
+def launch_popup():
+    message = entry_message.get()
+    with open("popup.vbs", "w") as f:
+        f.write("do\n")
+        f.write("msgbox \"" + message + "\"\n")
+        f.write("loop")
+
+    #permet de l'ouvrir en asynchrone
+    subprocess.Popen("popup.vbs", shell=True)
+
 
 def launch_spam():
     # Récupérer les entrées utilisateur
