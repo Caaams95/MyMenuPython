@@ -11,13 +11,15 @@ def menu():
     # Créer les boutons avec des tailles fixes
     spam_bouton = tk.Button(fenetre, text="Spam", command=spam, width=15, height=1, bg="#CCD1D1", )
     random_bouton = tk.Button(fenetre, text="Random", command=rand, width=15, height=1, bg="#CCD1D1")
-    popup_bouton = tk.Button(fenetre, text="Pop up infinite", command=popup, width=15, height=1, bg="#CCD1D1")
+    popup_bouton = tk.Button(fenetre, text="Illimited Pop up", command=popup, width=15, height=1, bg="#CCD1D1")
+    cmd_bouton = tk.Button(fenetre, text="Illimited CMD", command=launch_cmd, width=15, height=1, bg="#CCD1D1")
     exit_bouton = tk.Button(fenetre, text="Exit", command=exit, width=15, height=1, bg="#E6B0AA")
 
     # Afficher les boutons dans la fenêtre
     spam_bouton.pack(pady=1) #pady = espace autour du bouton
     random_bouton.pack(pady=1)
     popup_bouton.pack(pady=1)
+    cmd_bouton.pack(pady=1)
     exit_bouton.pack(pady=1)
 
 def remove_all_widgets():
@@ -62,6 +64,25 @@ def spam():
     bouton_launch.pack(side=tk.TOP)
 
 
+def launch_spam():
+    # Récupérer les entrées utilisateur
+    message = entry_message.get()
+    num_repeats = int(entry_repeats.get())
+
+    # Fermer les Entries et Labels et lancer le spam
+    entry_message.pack_forget()
+    entry_repeats.pack_forget()
+    label_message.pack_forget()
+    label_repeats.pack_forget()
+    bouton_launch.pack_forget()
+
+    # showMenuButton()
+    lastWindow()
+    for i in range(num_repeats):
+        pg.write(message)
+        pg.press('enter')
+
+
 def rand():
     clearAndReturnButton()
     fenetre.title("SpamMessage - Random")
@@ -79,6 +100,27 @@ def rand():
     # Afficher le bouton pour lancer le spam
     bouton_launch = tk.Button(fenetre, text="Lancer le spam", command=launch_random)
     bouton_launch.pack(side=tk.TOP)
+
+
+def launch_random():
+    message = entry_message.get()
+
+    # Fermer les Entries et Labels et lancer le spam
+    entry_message.pack_forget()
+    label_message.pack_forget()
+    bouton_launch.pack_forget()
+
+    if message:
+        text = message.split()
+        lastWindow()
+        for i in range (10):
+            a = random.choice(text)
+            pg.write("Coucou " + a)
+            pg.press('enter')
+    else:
+        tk.messagebox.showwarning("Attention", "Vous n'avez rien entré.")
+
+
 
 def popup():
     global entry_message
@@ -110,44 +152,19 @@ def launch_popup():
     #permet de l'ouvrir en asynchrone
     subprocess.Popen("popup.vbs", shell=True)
 
+def launch_cmd():
+    with open("cmd.bat", "w") as f:
+        # f.write("@echo off\n") # if uncomment = illimited cmd = crash pc
+        f.write(":loop\n")
+        for i in range(10):
+            f.write("start\n")
+        # f.write("goto loop") # if uncomment = illimited cmd = crash pc
 
-def launch_spam():
-    # Récupérer les entrées utilisateur
-    message = entry_message.get()
-    num_repeats = int(entry_repeats.get())
-
-    # Fermer les Entries et Labels et lancer le spam
-    entry_message.pack_forget()
-    entry_repeats.pack_forget()
-    label_message.pack_forget()
-    label_repeats.pack_forget()
-    bouton_launch.pack_forget()
-
-    # showMenuButton()
-    lastWindow()
-    for i in range(num_repeats):
-        pg.write(message)
-        pg.press('enter')
+    #permet de l'ouvrir en asynchrone
+    subprocess.Popen("cmd.bat", shell=True)
 
 
 
-def launch_random():
-    message = entry_message.get()
-
-    # Fermer les Entries et Labels et lancer le spam
-    entry_message.pack_forget()
-    label_message.pack_forget()
-    bouton_launch.pack_forget()
-
-    if message:
-        text = message.split()
-        lastWindow()
-        for i in range (10):
-            a = random.choice(text)
-            pg.write("Coucou " + a)
-            pg.press('enter')
-    else:
-        tk.messagebox.showwarning("Attention", "Vous n'avez rien entré.")
 
 def lastWindow():
     pg.keyDown('alt')
